@@ -1,18 +1,18 @@
 <template>
   <main>
     <section v-if="users.length > 0">
-      <UserList>
-        <UserItem
+      <UserList
+        ><UserItem
           v-on:click="onCardClick"
           v-for="user in visibleUsers"
           v-bind:key="user.id"
           v-bind:user="user"
-        />
-      </UserList>
+      /></UserList>
     </section>
-    <section v-else style="text-align: center">
-      <ClearListTitle>Users not found</ClearListTitle>
+    <section v-else>
+      <ClearListTitle>You not choose users</ClearListTitle>
     </section>
+
     <Modal v-model:show="isModalOpen"><UserCard v-bind:user="choosen" /></Modal>
   </main>
 </template>
@@ -37,6 +37,7 @@ export default {
       users: [],
       isModalOpen: false,
       choosen: {},
+      localUser: [],
       visibleUsers: [],
     };
   },
@@ -59,9 +60,17 @@ export default {
       this.choosen = { ...response.data };
     },
   },
-  async mounted() {
-    const response = await axios.get("https://api.github.com/users");
-    this.users = response.data;
+  mounted() {
+    const isLocalIncludesUser = window.localStorage.getItem("users");
+    if (isLocalIncludesUser) {
+      this.localUser = [...JSON.parse(isLocalIncludesUser)];
+      this.localUser.map(async (user) => {
+        const response = await axios.get(
+          `https://api.github.com/users/${user}`
+        );
+        this.users = [...this.users, response.data];
+      });
+    }
     this.visibleUsers = [...this.users];
   },
   updated() {
@@ -84,5 +93,4 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped></style>

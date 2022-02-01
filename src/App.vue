@@ -1,23 +1,31 @@
 <template>
-  <Header class="header" />
+  <Header class="header" v-model:filter="filter" v-model:sort="sort" />
   <Sidebar class="sidebar" />
-  <AllUsers class="main" />
+  <router-view
+    class="main"
+    v-model:filter="filter"
+    v-model:sort="sort"
+  ></router-view>
   <Footer class="footer" />
 </template>
 
 <script>
 import Header from "./components/Header.vue";
 import Sidebar from "./components/SideBar.vue";
-import AllUsers from "./components/AllUsers.vue";
 import Footer from "./components/Footer.vue";
 
 export default {
   name: "App",
   components: {
     Header,
-    AllUsers,
     Sidebar,
     Footer,
+  },
+  data() {
+    return {
+      filter: "",
+      sort: "id",
+    };
   },
 };
 </script>
@@ -33,8 +41,10 @@ export default {
     "header header"
     "sidebar main"
     "footer footer";
+
+  grid-auto-rows: 100px 1fr 100px;
+  grid-auto-columns: 1fr 3fr;
   height: 100vh;
-  widows: 100vw;
   margin: 0 auto;
 }
 .header {
@@ -48,6 +58,7 @@ export default {
 }
 .sidebar {
   grid-area: sidebar;
+  border-right: 2px solid teal;
 }
 .footer {
   grid-area: footer;

@@ -17,7 +17,6 @@ export default {
   methods: {
     closeModal() {
       this.$emit("update:show", false);
-      console.log("Click");
     },
   },
 };

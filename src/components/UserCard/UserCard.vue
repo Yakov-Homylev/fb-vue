@@ -61,6 +61,7 @@ export default {
       this.localUser = [...this.localUser, newUser];
 
       window.localStorage.setItem("users", JSON.stringify(this.localUser));
+      alert("User add to your list");
     },
     deleteFromChoosen(e) {
       const newUser = e.target.dataset.login;
@@ -75,6 +76,7 @@ export default {
       console.log(newLocalStorage);
       window.localStorage.setItem("users", JSON.stringify(newLocalStorage));
       this.localUser = [...newLocalStorage];
+      alert("User delete from your list");
     },
   },
   mounted() {

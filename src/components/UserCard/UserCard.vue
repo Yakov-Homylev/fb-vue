@@ -37,52 +37,69 @@
 </template>
 
 <script>
+import { useToast } from "vue-toastification";
 import SubmitButton from "../UI/SubmitButton.vue";
 export default {
   components: {
     SubmitButton,
   },
   props: {
-    user: Object,
+    user: { type: Object, default: () => ({}) },
+    localUsers: {
+      type: Array,
+      default: () => [],
+    },
   },
-  data() {
-    return {
-      localUser: [],
-    };
-  },
+  // data() {
+  //   return {
+  //     localUsers: [],
+  //   };
+  // },
   methods: {
     addToChoosen(e) {
-      console.log(e.target.dataset.login);
+      const toast = useToast();
       const newUser = e.target.dataset.login;
-      const isUserIncludsInArray = this.localUser.includes(newUser);
+      const localStorage = window.localStorage.getItem("users");
+      const parsedLocalStorage = JSON.parse(localStorage) ?? [];
+      const isUserIncludsInArray = parsedLocalStorage.includes(newUser);
       if (isUserIncludsInArray) {
-        return alert("This user in your choosen");
+        return toast.error("This user in your choosen");
       }
-      this.localUser = [...this.localUser, newUser];
+      this.$emit("update:localUsers", [...parsedLocalStorage, newUser]);
+      console.log(this.localUsers);
 
-      window.localStorage.setItem("users", JSON.stringify(this.localUser));
-      alert("User add to your list");
+      window.localStorage.setItem(
+        "users",
+        JSON.stringify([...parsedLocalStorage, newUser])
+      );
+      toast.success("User add to your list");
     },
     deleteFromChoosen(e) {
+      const toast = useToast();
       const newUser = e.target.dataset.login;
       const localStorageUser = window.localStorage.getItem("users");
-      console.log(localStorageUser);
-      if (!localStorageUser) {
-        return alert("This user not in your choosen");
+      const parsedLocalStorage = JSON.parse(localStorageUser) ?? [];
+      const notIncludeUser = parsedLocalStorage.find(
+        (user) => user === newUser
+      );
+
+      if (!notIncludeUser) {
+        return toast.error("This user not in your choosen");
       }
-      const newLocalStorage = JSON.parse(localStorageUser).filter(
+      const newLocalStorage = parsedLocalStorage.filter(
         (user) => user !== newUser
       );
-      console.log(newLocalStorage);
       window.localStorage.setItem("users", JSON.stringify(newLocalStorage));
-      this.localUser = [...newLocalStorage];
-      alert("User delete from your list");
+      this.$emit("update:localUsers", [...newLocalStorage]);
+
+      toast.success("User delete from your list");
     },
   },
   mounted() {
     const isLocalIncludesUser = window.localStorage.getItem("users");
     if (isLocalIncludesUser) {
-      this.localUser = [...JSON.parse(isLocalIncludesUser)];
+      // this.localUsers = [...JSON.parse(isLocalIncludesUser)];
+      this.$emit("update:localUsers", [...JSON.parse(isLocalIncludesUser)]);
     }
   },
 };

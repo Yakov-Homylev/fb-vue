@@ -27,12 +27,10 @@ export default {
     selectedSort(e) {
       const sort = e.target.value;
       this.$emit("update:sort", sort);
-      console.log(sort);
     },
     changeFilter(e) {
       const filter = e.target.value.toLowerCase();
       this.$emit("update:filter", filter);
-      console.log(filter);
     },
   },
 };

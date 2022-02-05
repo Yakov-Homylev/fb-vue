@@ -13,7 +13,9 @@
       <ClearListTitle>You not choose users</ClearListTitle>
     </section>
 
-    <Modal v-model:show="isModalOpen"><UserCard v-bind:user="choosen" /></Modal>
+    <Modal v-model:show="isModalOpen"
+      ><UserCard v-bind:user="choosen" v-bind:localUsers="localUsers"
+    /></Modal>
   </main>
 </template>
 
@@ -37,7 +39,7 @@ export default {
       users: [],
       isModalOpen: false,
       choosen: {},
-      localUser: [],
+      localUsers: [],
       visibleUsers: [],
     };
   },
@@ -63,8 +65,8 @@ export default {
   mounted() {
     const isLocalIncludesUser = window.localStorage.getItem("users");
     if (isLocalIncludesUser) {
-      this.localUser = [...JSON.parse(isLocalIncludesUser)];
-      this.localUser.map(async (user) => {
+      this.localUsers = [...JSON.parse(isLocalIncludesUser)];
+      this.localUsers.map(async (user) => {
         const response = await axios.get(
           `https://api.github.com/users/${user}`
         );
@@ -74,6 +76,10 @@ export default {
     this.visibleUsers = [...this.users];
   },
   updated() {
+    const localStorageUser = window.localStorage.getItem("users") ?? [];
+    const parsedLocalStorage = JSON.parse(localStorageUser);
+
+    this.visibleUsers = [...this.localUsers];
     const filteredAndSortedUsers = this.users
       .filter((user) => user.login.includes(this.filter))
       .sort((userA, userB) => {
@@ -88,7 +94,12 @@ export default {
             break;
         }
       });
-    this.visibleUsers = [...filteredAndSortedUsers];
+
+    const updatedUsers = filteredAndSortedUsers.filter((user) =>
+      parsedLocalStorage.includes(user.login)
+    );
+
+    this.visibleUsers = [...updatedUsers];
   },
 };
 </script>

@@ -5,15 +5,16 @@
         >Clear users list</SubmitButton
       >
 
-      <transition name="slide">
-        <UserList
-          ><UserItem
+      <UserList>
+        <transition-group name="slide" tag="li">
+          <UserItem
             v-on:click="onCardClick"
             v-for="user in visibleUsers"
             v-bind:key="user.id"
             v-bind:user="user"
-        /></UserList>
-      </transition>
+          />
+        </transition-group>
+      </UserList>
     </section>
     <section v-else>
       <ClearListTitle>You not choose users</ClearListTitle>

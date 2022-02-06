@@ -101,6 +101,9 @@ export default {
       // this.localUsers = [...JSON.parse(isLocalIncludesUser)];
       this.$emit("update:localUsers", [...JSON.parse(isLocalIncludesUser)]);
     }
+    if (!isLocalIncludesUser) {
+      return;
+    }
     this.inFavorite = JSON.parse(isLocalIncludesUser).find(
       (login) => login === this.user.login
     );

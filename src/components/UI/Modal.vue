@@ -1,9 +1,11 @@
 <template>
-  <div class="Modal" v-if="show" @click.stop="closeModal">
-    <div @click.stop class="Modal__Wrapper">
-      <slot></slot>
+  <transition name="fade">
+    <div class="Modal" v-if="show" @click.stop="closeModal">
+      <div @click.stop class="Modal__Wrapper">
+        <slot></slot>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -40,5 +42,14 @@ export default {
 .Modal__Wrapper {
   background-color: white;
   padding: 12px;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

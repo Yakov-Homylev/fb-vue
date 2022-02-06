@@ -1,6 +1,10 @@
 <template>
   <main>
     <section v-if="users.length > 0">
+      <SubmitButton v-on:click="onClearBtnClick" class="clearBtn"
+        >Clear users list</SubmitButton
+      >
+
       <UserList
         ><UserItem
           v-on:click="onCardClick"
@@ -26,6 +30,7 @@ import UserCard from "./UserCard/UserCard.vue";
 import UserList from "./UserList/UserList.vue";
 import UserItem from "./UserItem/UserItem.vue";
 import ClearListTitle from "./UI/ClearListTitle.vue";
+import SubmitButton from "./UI/SubmitButton.vue";
 export default {
   components: {
     Modal,
@@ -33,6 +38,7 @@ export default {
     UserList,
     UserItem,
     ClearListTitle,
+    SubmitButton,
   },
   data() {
     return {
@@ -58,8 +64,16 @@ export default {
       e.preventDefault();
       this.isModalOpen = true;
       const login = e.target.dataset.login;
-      const response = await axios.get(`https://api.github.com/users/${login}`);
-      this.choosen = { ...response.data };
+
+      const choosenUser = this.users.find((user) => user.login === login);
+      this.choosen = { ...choosenUser };
+    },
+    onClearBtnClick() {
+      console.log("Click");
+
+      this.users = [];
+      this.visibleUsers = [];
+      window.localStorage.removeItem("users");
     },
   },
   mounted() {
@@ -77,6 +91,7 @@ export default {
   },
   updated() {
     const localStorageUser = window.localStorage.getItem("users") ?? [];
+
     const parsedLocalStorage = JSON.parse(localStorageUser);
 
     this.visibleUsers = [...this.localUsers];
@@ -104,4 +119,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.clearBtn {
+  display: block;
+  margin: 0 auto;
+  padding: 8px;
+}
+</style>

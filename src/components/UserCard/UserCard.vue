@@ -66,7 +66,6 @@ export default {
         return toast.error("This user in your choosen");
       }
       this.$emit("update:localUsers", [...parsedLocalStorage, newUser]);
-      console.log(this.localUsers);
 
       window.localStorage.setItem(
         "users",

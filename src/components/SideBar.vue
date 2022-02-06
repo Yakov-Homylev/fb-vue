@@ -3,7 +3,7 @@
     <nav>
       <ul class="nav__list">
         <li><router-link to="/">All users</router-link></li>
-        <li><router-link to="/choosen-users">Choosen users</router-link></li>
+        <li><router-link to="/favorite-users">Favorite users</router-link></li>
       </ul>
     </nav>
   </div>

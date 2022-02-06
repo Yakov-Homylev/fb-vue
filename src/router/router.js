@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import AllUsers from "../components/AllUsers";
-import ChoosenUsers from "../components/ChoosenUsers";
+import FavoriteUsers from "../components/FavoriteUsers";
 
 const routes = [
   {
@@ -8,8 +8,8 @@ const routes = [
     component: AllUsers,
   },
   {
-    path: "/choosen-users",
-    component: ChoosenUsers,
+    path: "/favorite-users",
+    component: FavoriteUsers,
   },
 ];
 

@@ -1,7 +1,7 @@
 <template>
   <footer class="footer__wrapper">
     <h2 class="footer__title">
-      Application create for <span class="footer__name">Fintech Band</span>
+      Application create for <span class="footer__name">Fintech Band 🐈</span>
     </h2>
   </footer>
 </template>

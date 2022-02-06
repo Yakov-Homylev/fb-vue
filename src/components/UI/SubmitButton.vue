@@ -19,4 +19,10 @@ export default {};
 .btn:hover {
   background-color: lightcyan;
 }
+.btn:disabled {
+  text-decoration: line-through;
+}
+.btn:disabled.btn:hover {
+  background-color: tomato;
+}
 </style>

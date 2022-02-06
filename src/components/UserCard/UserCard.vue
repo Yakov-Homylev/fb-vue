@@ -28,6 +28,7 @@
       style="margin-bottom: 8px"
       v-on:click="addToChoosen"
       v-bind:data-login="user.login"
+      v-bind:disabled="inFavorite"
       >Add to Choosen Users</SubmitButton
     >
     <SubmitButton v-on:click="deleteFromChoosen" v-bind:data-login="user.login"
@@ -50,11 +51,11 @@ export default {
       default: () => [],
     },
   },
-  // data() {
-  //   return {
-  //     localUsers: [],
-  //   };
-  // },
+  data() {
+    return {
+      inFavorite: false,
+    };
+  },
   methods: {
     addToChoosen(e) {
       const toast = useToast();
@@ -100,6 +101,13 @@ export default {
       // this.localUsers = [...JSON.parse(isLocalIncludesUser)];
       this.$emit("update:localUsers", [...JSON.parse(isLocalIncludesUser)]);
     }
+    this.inFavorite = JSON.parse(isLocalIncludesUser).find(
+      (login) => login === this.user.login
+    );
+  },
+  unmounted() {
+    this.inFavorite = false;
+    this.$emit("update:user", {});
   },
 };
 </script>
